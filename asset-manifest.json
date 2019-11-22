@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/React-TimeCalculator/static/css/main.6c2c7f6a.chunk.css",
+    "main.js": "/React-TimeCalculator/static/js/main.49560365.chunk.js",
+    "main.js.map": "/React-TimeCalculator/static/js/main.49560365.chunk.js.map",
+    "runtime-main.js": "/React-TimeCalculator/static/js/runtime-main.59f9c9eb.js",
+    "runtime-main.js.map": "/React-TimeCalculator/static/js/runtime-main.59f9c9eb.js.map",
+    "static/js/2.ee9a9cc9.chunk.js": "/React-TimeCalculator/static/js/2.ee9a9cc9.chunk.js",
+    "static/js/2.ee9a9cc9.chunk.js.map": "/React-TimeCalculator/static/js/2.ee9a9cc9.chunk.js.map",
+    "index.html": "/React-TimeCalculator/index.html",
+    "precache-manifest.100f0e2f6270da68eec7fca43bcf3ee5.js": "/React-TimeCalculator/precache-manifest.100f0e2f6270da68eec7fca43bcf3ee5.js",
+    "service-worker.js": "/React-TimeCalculator/service-worker.js",
+    "static/css/main.6c2c7f6a.chunk.css.map": "/React-TimeCalculator/static/css/main.6c2c7f6a.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.59f9c9eb.js",
+    "static/js/2.ee9a9cc9.chunk.js",
+    "static/css/main.6c2c7f6a.chunk.css",
+    "static/js/main.49560365.chunk.js"
+  ]
+}
