@@ -1,4 +1,5 @@
 import React from "react";
+import * as math from 'mathjs';
 import "./App.scss";
 
 class App extends React.Component {
@@ -8,28 +9,36 @@ class App extends React.Component {
             valueInput: 0,
             valueHidden: 0,
             ifOperator: false,
-            operator: null
+            operator: null,
+            valueHistory: 0
         };
     }
-
 
     clearValue = () => {
         this.setState({
             valueInput: 0,
             valueHidden: 0,
             ifOperator: false,
-            operator: null
+            operator: null,
+            valueHistory: 0
         });
     };
+
+    parseMath = () => {
+
+    }
+
     number = num => {
         let baseFunc = () => {
             if (parseInt(this.state.valueInput) === 0 && !((this.state.valueInput + "").indexOf(".") > 0)) {
                 this.setState({
-                    valueInput: "" + parseInt(num) + ""
+                    valueInput: parseInt(num),
+                    valueHistory: parseInt(num)
                 });
             } else {
                 this.setState({
-                    valueInput: this.state.valueInput + "" + num + ""
+                    valueInput: this.state.valueInput + num,
+                    valueHistory: this.state.valueHistory + num
                 });
             }
         }
@@ -58,26 +67,38 @@ class App extends React.Component {
             }
         }
     };
-    plus = () => {
+
+    mathOperator = (op) => {
+        // debugger
         if (this.state.valueHidden === 0) {
             if (parseInt(this.state.valueInput) === 0) {
                 this.clearValue()
             } else {
-                this.setState({
-                    valueHidden: this.state.valueInput,
-                    ifOperator: true,
-                    operator: "+"
-                });
+                if (op === '/' || op === '*') {
+                    this.setState({
+                        valueHidden: this.state.valueInput,
+                        ifOperator: true,
+                        operator: op,
+                        valueHistory: this.state.valueHistory + op
+                    });
+                } else {
+                    this.setState({
+                        valueHidden: this.state.valueInput,
+                        ifOperator: true,
+                        operator: op,
+                        valueHistory: this.state.valueHistory + op
+                    });
+                }
             }
         } else {
             if (parseInt(this.state.valueInput) === 0) {
-                this.clearValue()
+                this.clearValue();
             } else {
                 this.setState({
-                    valueHidden: parseInt(this.state.valueHidden) + parseInt(this.state.valueInput),
-                    valueInput: parseInt(this.state.valueHidden) + parseInt(this.state.valueInput),
+                    valueHidden: math.evaluate(parseFloat(this.state.valueHidden) + this.state.operator + parseFloat(this.state.valueInput)).split(8),
+                    valueInput: math.evaluate(parseFloat(this.state.valueHidden) + this.state.operator + parseFloat(this.state.valueInput)).split(8),
                     ifOperator: true,
-                    operator: "+"
+                    operator: op
                 });
             }
         }
@@ -85,7 +106,16 @@ class App extends React.Component {
     };
 
     equal = () => {
-        this.plus();
+        if (parseInt(this.state.valueInput) === 0) {
+            this.clearValue()
+        } else {
+            this.setState({
+                valueHidden: math.evaluate(parseFloat(this.state.valueHidden) + this.state.operator + parseFloat(this.state.valueInput)),
+                valueInput: math.evaluate(parseFloat(this.state.valueHidden) + this.state.operator + parseFloat(this.state.valueInput)),
+                ifOperator: false,
+                valueHistory: this.state.valueHistory + "=" + math.evaluate(parseFloat(this.state.valueHidden) + this.state.operator + parseFloat(this.state.valueInput))
+            });
+        }
         this.setState({
             valueHidden: 0,
             ifOperator: false,
@@ -101,13 +131,17 @@ class App extends React.Component {
         return (
             <div className="App">
                 <div className="input">{this.state.valueInput}</div>
+                <div className="output">{this.state.valueHistory}</div>
                 <div className="section">
                     <div className="button" onClick={this.clearValue}>
                         C
                     </div>
                     <div className="button">Ч</div>
                     <div className="button">М</div>
-                    <div className="button">÷</div>
+                    <div className="button" operator="/" onClick={e => {
+                        this.mathOperator(e.target.getAttribute("operator"))
+                    }}>÷
+                    </div>
                     <div className="button" onClick={e => {
                         this.number(e.target.innerHTML)
                     }}>
@@ -123,7 +157,10 @@ class App extends React.Component {
                     }}>
                         9
                     </div>
-                    <div className="button">×</div>
+                    <div className="button" operator="*" onClick={e => {
+                        this.mathOperator(e.target.getAttribute("operator"))
+                    }}>×
+                    </div>
                     <div className="button" onClick={e => {
                         this.number(e.target.innerHTML)
                     }}>
@@ -139,7 +176,10 @@ class App extends React.Component {
                     }}>
                         6
                     </div>
-                    <div className="button">-</div>
+                    <div className="button" onClick={e => {
+                        this.mathOperator(e.target.innerHTML)
+                    }}>-
+                    </div>
                     <div className="button" onClick={e => {
                         this.number(e.target.innerHTML)
                     }}>
@@ -155,7 +195,10 @@ class App extends React.Component {
                     }}>
                         3
                     </div>
-                    <div className="button" onClick={this.plus}>+</div>
+                    <div className="button" onClick={e => {
+                        this.mathOperator(e.target.innerHTML)
+                    }}>+
+                    </div>
                     <div className="button" onClick={e => {
                         this.number(e.target.innerHTML)
                     }}>0
