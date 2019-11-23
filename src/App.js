@@ -45,22 +45,18 @@ class App extends React.Component {
         let number = parseFloat(num);
         let baseFunc = () => {
             if (number === 0) {
-                console.log('1')
                 this.setState({
                     valueInput: num,
                 });
             } else if (parseInt(this.state.valueInput) === 0 && this.state.valueInput !== "0.") {
-                console.log('3')
                 this.setState({
                     valueInput: num,
                 });
             } else if (this.state.valueInput === "0.") {
-                console.log('4')
                 this.setState({
                     valueInput: this.state.valueInput + num,
                 });
             } else {
-                console.log('2')
                 this.setState({
                     valueInput: this.state.valueInput + num,
                 });
