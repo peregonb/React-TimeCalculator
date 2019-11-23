@@ -12,7 +12,9 @@ class App extends React.Component {
             operator: null,
             valueHistory: 0
         };
+        this.newRef = React.createRef();
     }
+
 
     clearValue = () => {
         this.setState({
@@ -22,25 +24,63 @@ class App extends React.Component {
             operator: null,
             valueHistory: 0
         });
+
+        this.scrollEnd(this.newRef.current);
     };
 
-    parseMath = () => {
-
+    ifDot = str => {
+        const regex = /\W/g;
+        let m;
+        while ((m = regex.exec(str)) !== null) {
+            if (m.index === regex.lastIndex) {
+                regex.lastIndex++;
+            }
+            m.forEach(() => {return true});
+        }
     }
 
     number = num => {
+        let number = parseFloat(num);
         let baseFunc = () => {
-            if (parseInt(this.state.valueInput) === 0 && !((this.state.valueInput + "").indexOf(".") > 0)) {
+            // if (parseInt(this.state.valueInput) === 0 &&
+            // (!((this.state.valueInput + "").indexOf(".") > 0))) {
+            //     this.setState({
+            //         valueInput: parseInt(num),
+            //         valueHistory: parseInt(num)
+            //     });
+            // } else {
+            //     this.setState({
+            //         valueInput: this.state.valueInput + num,
+            //         valueHistory: this.state.valueHistory + num
+            //     });
+            // }
+
+            if (number === 0) {
+                console.log('1')
                 this.setState({
-                    valueInput: parseInt(num),
-                    valueHistory: parseInt(num)
+                    valueInput: num,
+                    // valueHistory: num
                 });
-            } else {
+            } else if (parseInt(this.state.valueInput) === 0 && this.state.valueInput !== "0.") {
+                console.log('3')
+                this.setState({
+                    valueInput: num,
+                    // valueHistory: num
+                });
+            } else if (this.state.valueInput === "0.") {
+                console.log('4')
                 this.setState({
                     valueInput: this.state.valueInput + num,
-                    valueHistory: this.state.valueHistory + num
+                    // valueHistory: this.state.valueHistory + num
+                });
+            } else {
+                console.log('2')
+                this.setState({
+                    valueInput: this.state.valueInput + num,
+                    // valueHistory: this.state.valueHistory + num
                 });
             }
+
         }
 
         if (this.state.ifOperator === false) {
@@ -48,90 +88,96 @@ class App extends React.Component {
         } else {
             baseFunc();
             this.setState({
-                valueInput: num,
+                valueInput: number,
                 ifOperator: false
             });
 
         }
+
+        this.scrollEnd(this.newRef.current);
     };
     dot = () => {
-        if (!((this.state.valueInput + "").indexOf(".") > 0)) {
-            if (parseInt(this.state.valueInput) === 0) {
-                this.setState({
-                    valueInput: "0."
-                });
-            } else {
-                this.setState({
-                    valueInput: this.state.valueInput + "."
-                });
-            }
+        if (!this.ifDot(this.state.valueInput)) {
+            // debugger
+            console.log(this.state)
+            this.setState({
+
+                valueInput: this.state.valueInput + ".",
+                // valueHistory: this.state.valueInput + "."
+            });
         }
+
+        this.scrollEnd(this.newRef.current);
     };
 
     mathOperator = (op) => {
-        // debugger
+
         if (this.state.valueHidden === 0) {
-            if (parseInt(this.state.valueInput) === 0) {
-                this.clearValue()
-            } else {
-                if (op === '/' || op === '*') {
-                    this.setState({
-                        valueHidden: this.state.valueInput,
-                        ifOperator: true,
-                        operator: op,
-                        valueHistory: this.state.valueHistory + op
-                    });
-                } else {
-                    this.setState({
-                        valueHidden: this.state.valueInput,
-                        ifOperator: true,
-                        operator: op,
-                        valueHistory: this.state.valueHistory + op
-                    });
-                }
-            }
+            // if (parseInt(this.state.valueInput) === 0) {
+            //     this.clearValue()
+            // } else {
+            this.setState({
+                valueHidden: this.state.valueInput,
+                ifOperator: true,
+                operator: op,
+                // valueHistory: this.state.valueHistory + op
+            });
+            // }
         } else {
-            if (parseInt(this.state.valueInput) === 0) {
-                this.clearValue();
-            } else {
-                this.setState({
-                    valueHidden: math.evaluate(parseFloat(this.state.valueHidden) + this.state.operator + parseFloat(this.state.valueInput)).split(8),
-                    valueInput: math.evaluate(parseFloat(this.state.valueHidden) + this.state.operator + parseFloat(this.state.valueInput)).split(8),
-                    ifOperator: true,
-                    operator: op
-                });
-            }
+            // if (parseInt(this.state.valueInput) === 0) {
+            // this.clearValue();
+            // } else {
+            // debugger
+            let statement = math.evaluate(parseFloat(this.state.valueHidden) + this.state.operator + parseFloat(this.state.valueInput));
+            this.setState({
+                valueHidden: statement,
+                valueInput: statement,
+                ifOperator: true,
+                operator: op,
+                // valueHistory: this.state.valueHistory + "=" + math.evaluate(parseFloat(this.state.valueHidden) + this.state.operator + parseFloat(this.state.valueInput)) + op
+            });
+            // }
         }
 
+        this.scrollEnd(this.newRef.current);
     };
 
     equal = () => {
-        if (parseInt(this.state.valueInput) === 0) {
-            this.clearValue()
-        } else {
-            this.setState({
-                valueHidden: math.evaluate(parseFloat(this.state.valueHidden) + this.state.operator + parseFloat(this.state.valueInput)),
-                valueInput: math.evaluate(parseFloat(this.state.valueHidden) + this.state.operator + parseFloat(this.state.valueInput)),
-                ifOperator: false,
-                valueHistory: this.state.valueHistory + "=" + math.evaluate(parseFloat(this.state.valueHidden) + this.state.operator + parseFloat(this.state.valueInput))
-            });
-        }
+        // if (parseInt(this.state.valueInput) === 0) {
+        //     this.clearValue()
+        // }
+        // else {
+        let statement = math.evaluate(parseFloat(this.state.valueHidden) + this.state.operator + parseFloat(this.state.valueInput));
+        this.setState({
+            valueHidden: statement,
+            valueInput: statement,
+            ifOperator: false,
+            valueHistory: statement
+        });
+        // }
         this.setState({
             valueHidden: 0,
             ifOperator: false,
             operator: null
         });
+
+        this.scrollEnd(this.newRef.current);
     };
 
-    render() {
+    scrollEnd = (elem) => {
+        elem.scrollLeft = elem.scrollWidth
+    }
+
+    componentDidMount() {
         window.state = this.state;
-        document.addEventListener('click', function () {
-            console.log(window.state)
-        }, false);
+    }
+
+
+    render() {
         return (
             <div className="App">
                 <div className="input">{this.state.valueInput}</div>
-                <div className="output">{this.state.valueHistory}</div>
+                <input ref={this.newRef} readOnly type="text" className="output" value={this.state.valueHistory}/>
                 <div className="section">
                     <div className="button" onClick={this.clearValue}>
                         C
@@ -199,14 +245,14 @@ class App extends React.Component {
                         this.mathOperator(e.target.innerHTML)
                     }}>+
                     </div>
-                    <div className="button" onClick={e => {
+                    <div className="button double" onClick={e => {
                         this.number(e.target.innerHTML)
                     }}>0
                     </div>
-                    <div className="button" onClick={e => {
-                        this.number(e.target.innerHTML)
-                    }}>00
-                    </div>
+                    {/*<div className="button" onClick={e => {*/}
+                    {/*    this.number(e.target.innerHTML)*/}
+                    {/*}}>00*/}
+                    {/*</div>*/}
                     <div className="button" onClick={this.dot}>,
                     </div>
                     <div className="button" onClick={this.equal}>=</div>
