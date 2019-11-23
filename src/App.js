@@ -35,52 +35,36 @@ class App extends React.Component {
             if (m.index === regex.lastIndex) {
                 regex.lastIndex++;
             }
-            m.forEach(() => {return true});
+            m.forEach(() => {
+                return true
+            });
         }
     }
 
     number = num => {
         let number = parseFloat(num);
         let baseFunc = () => {
-            // if (parseInt(this.state.valueInput) === 0 &&
-            // (!((this.state.valueInput + "").indexOf(".") > 0))) {
-            //     this.setState({
-            //         valueInput: parseInt(num),
-            //         valueHistory: parseInt(num)
-            //     });
-            // } else {
-            //     this.setState({
-            //         valueInput: this.state.valueInput + num,
-            //         valueHistory: this.state.valueHistory + num
-            //     });
-            // }
-
             if (number === 0) {
                 console.log('1')
                 this.setState({
                     valueInput: num,
-                    // valueHistory: num
                 });
             } else if (parseInt(this.state.valueInput) === 0 && this.state.valueInput !== "0.") {
                 console.log('3')
                 this.setState({
                     valueInput: num,
-                    // valueHistory: num
                 });
             } else if (this.state.valueInput === "0.") {
                 console.log('4')
                 this.setState({
                     valueInput: this.state.valueInput + num,
-                    // valueHistory: this.state.valueHistory + num
                 });
             } else {
                 console.log('2')
                 this.setState({
                     valueInput: this.state.valueInput + num,
-                    // valueHistory: this.state.valueHistory + num
                 });
             }
-
         }
 
         if (this.state.ifOperator === false) {
@@ -91,62 +75,41 @@ class App extends React.Component {
                 valueInput: number,
                 ifOperator: false
             });
-
         }
 
         this.scrollEnd(this.newRef.current);
     };
     dot = () => {
         if (!this.ifDot(this.state.valueInput)) {
-            // debugger
             console.log(this.state)
             this.setState({
-
-                valueInput: this.state.valueInput + ".",
-                // valueHistory: this.state.valueInput + "."
+                valueInput: this.state.valueInput + "."
             });
         }
-
         this.scrollEnd(this.newRef.current);
     };
 
     mathOperator = (op) => {
-
         if (this.state.valueHidden === 0) {
-            // if (parseInt(this.state.valueInput) === 0) {
-            //     this.clearValue()
-            // } else {
             this.setState({
                 valueHidden: this.state.valueInput,
                 ifOperator: true,
                 operator: op,
-                // valueHistory: this.state.valueHistory + op
             });
-            // }
         } else {
-            // if (parseInt(this.state.valueInput) === 0) {
-            // this.clearValue();
-            // } else {
-            // debugger
             let statement = math.evaluate(parseFloat(this.state.valueHidden) + this.state.operator + parseFloat(this.state.valueInput));
             this.setState({
                 valueHidden: statement,
                 valueInput: statement,
                 ifOperator: true,
                 operator: op,
-                // valueHistory: this.state.valueHistory + "=" + math.evaluate(parseFloat(this.state.valueHidden) + this.state.operator + parseFloat(this.state.valueInput)) + op
             });
-            // }
         }
 
         this.scrollEnd(this.newRef.current);
     };
 
     equal = () => {
-        // if (parseInt(this.state.valueInput) === 0) {
-        //     this.clearValue()
-        // }
-        // else {
         let statement = math.evaluate(parseFloat(this.state.valueHidden) + this.state.operator + parseFloat(this.state.valueInput));
         this.setState({
             valueHidden: statement,
@@ -154,7 +117,6 @@ class App extends React.Component {
             ifOperator: false,
             valueHistory: statement
         });
-        // }
         this.setState({
             valueHidden: 0,
             ifOperator: false,
