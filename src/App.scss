@@ -90,9 +90,16 @@
   font-size: 22px;
   cursor: pointer;
   user-select: none;
-  box-shadow: 0 0 1px #be7575;
+  box-shadow: 1px 2px 0 #6f6060;
+  transition: box-shadow .2s, transform .2s;
 
-  &.double{
+  &.active {
+    box-shadow: 0 0 0 #6f6060;
+    transform: translate(1px, 2px);
+    transition: box-shadow .2s, transform .2s;
+  }
+
+  &.double {
     width: 48%;
   }
 
@@ -106,9 +113,10 @@
   flex-flow: row wrap;
   justify-content: space-between;
 }
+
 input:focus,
 select:focus,
 textarea:focus,
 button:focus {
-    outline: none;
+  outline: none;
 }
