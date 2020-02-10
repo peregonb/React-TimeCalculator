@@ -1,6 +1,7 @@
 import React from "react";
 import * as math from 'mathjs';
 import "./App.scss";
+import {expression} from "mathjs";
 
 class App extends React.Component {
     constructor(props) {
@@ -12,10 +13,15 @@ class App extends React.Component {
             operator: null,
             valueHistory: 0,
             timeFunc: false,
-            targetClass: null
+            targetClass: null,
+            timeFuncClass: "",
+            hourDisable: false,
+            minuteDisable: false,
+            equalDisable: false,
+            error: ""
         };
         this.newRef = React.createRef();
-    }
+    };
 
 
     clearValue = () => {
@@ -25,7 +31,12 @@ class App extends React.Component {
             ifOperator: false,
             operator: null,
             valueHistory: 0,
-            timeFunc: false
+            timeFunc: false,
+            timeFuncClass: "",
+            hourDisable: false,
+            minuteDisable: false,
+            equalDisable: false,
+            error: ""
         });
 
         this.scrollEnd(this.newRef.current);
@@ -45,7 +56,7 @@ class App extends React.Component {
             return arr.length;
         }
 
-    }
+    };
 
     number = num => {
         let number = parseFloat(num);
@@ -53,7 +64,7 @@ class App extends React.Component {
             if (num.toString().match(/0./) === null) {
                 return false
             } else return num.match(/0./).length
-        }
+        };
 
         let baseFunc = () => {
             if (number === 0 && !this.state.valueInput) {
@@ -73,7 +84,7 @@ class App extends React.Component {
                     valueInput: this.state.valueInput + num,
                 });
             }
-        }
+        };
 
         if (this.state.ifOperator === false) {
             baseFunc();
@@ -81,7 +92,9 @@ class App extends React.Component {
             baseFunc();
             this.setState({
                 valueInput: number,
-                ifOperator: false
+                ifOperator: false,
+                hourDisable: false,
+                minuteDisable: false
             });
         }
 
@@ -110,7 +123,8 @@ class App extends React.Component {
                 valueInput: statement,
                 ifOperator: true,
                 valueHistory: statement,
-                operator: op
+                operator: op,
+                equalDisable: false
             });
 
         }
@@ -127,28 +141,64 @@ class App extends React.Component {
                 valueHistory: statement,
                 operator: null
             });
+            if (this.state.operator === '/' && parseFloat(this.state.valueInput) === 0) {
+                this.setState({error: "ну, ты шалун)"})
+            }
         } else {
-            let settings = (statement) => {
+            if (this.state.timeFunc === true && !this.ifAny(this.state.valueInput)) {
+                this.setState({error: "Введи переменную часа или минуты"})
+            }
+            else {
+                let transformExpression = (expression) => {
+                    console.log(expression)
+                    if (expression.match(/[H]/) && expression.match(/[M]/)) {
+                        let re = /[M]/;
+                        let arr = expression.split(re);
+                        if (arr[1] === "") {
+                            return expression;
+                        } else {
+                            return arr[1] + arr[0] + "M"
+                        }
+                    } else if (!expression.match(/[H]/) && expression.match(/[M]/)) {
+                        return "0H" + expression
+                    } else if (expression.match(/[H]/) && !expression.match(/[M]/)) {
+                        return expression + "M"
+                    } else {
+                        return this.setState({equalDisable: true});
+                    }
+                };
+                let toStatement = (firstValue, secondValue) => {
+                    let re = /[HM]/;
+                    let arr1 = firstValue.split(re);
+                    let arr2 = secondValue.split(re);
+                    let secondsFirst = (+arr1[0]) * 60 * 60 + (+arr1[1]) * 60;
+                    let secondsSecond = (+arr2[0]) * 60 * 60 + (+arr2[1]) * 60;
+                    return math.evaluate(parseInt(secondsFirst) + this.state.operator + parseInt(secondsSecond));
+                };
+                let toDate = (num) => {
+                    let hours = parseInt((num / 60) / 60);
+                    let minutes = num / 60 - (hours * 60);
+                    if (hours === 0 && minutes !== 0) {
+                        return minutes + "M"
+                    } else if (minutes === 0 && hours !== 0) {
+                        return hours + "H"
+                    } else if (minutes === 0 && hours === 0) {
+                        return 0;
+                    } else {
+                        return hours + "H" + minutes + "M"
+                    }
+                };
+
+                let statement = toStatement(transformExpression(this.state.valueHidden), transformExpression(this.state.valueInput));
+
                 this.setState({
-                    valueHidden: 0,
-                    valueInput: statement + 'М',
-                    ifOperator: false,
-                    valueHistory: this.state.valueInput + "=" + statement + 'М',
-                    operator: null
+                    // valueHidden: this.state.valueInputHistory,
+                    valueInput: toDate(statement),
+                    // valueHistory: his,
+                   equalDisable: true,
+                    error: ""
                 });
             }
-            if (this.ifHour(this.state.valueInput) && !this.ifMinute(this.state.valueInput)) {
-                // debugger
-                let HoursToMin = this.state.valueInput.replace(/Ч/, '*60');
-                let statement = math.evaluate(HoursToMin);
-                settings(statement);
-            } else if (this.ifBoth(this.state.valueInput)) {
-                // debugger
-                let HoursToMin = this.state.valueInput.replace(/Ч/, '*60+').replace(/М/, '.0');
-                let statement = math.evaluate(HoursToMin);
-                settings(statement);
-            }
-
         }
 
 
@@ -157,69 +207,74 @@ class App extends React.Component {
 
     scrollEnd = (elem) => {
         elem.scrollLeft = elem.scrollWidth
-    }
-
+    };
 
     ifHour = (num) => {
-        if (num.toString().match(/Ч/) === null) {
+        if (num.toString().match(/H/) === null) {
             return false
         } else {
-            console.log(num.toString().match(/Ч/))
-            return num.toString().match(/Ч/).length
+            return num.toString().match(/H/).length
         }
-    }
+    };
     ifMinute = (num) => {
-        if (num.toString().match(/М/) === null) {
+        if (num.toString().match(/M/) === null) {
             return false
-        } else return num.toString().match(/М/).length
-    }
-    ifBoth = (num) => {
-        if (num.toString().match(/Ч/) === null) {
+        } else return num.toString().match(/M/).length
+    };
+    ifAny = num => {
+        if (num.toString().match(/[HM]/) === null) {
             return false
-        } else if (num.toString().match(/М/) === null) {
-            return false;
-        } else return num.toString().match(/Ч/).length
-    }
+        } else return num.toString().match(/[HM]/).length
+    };
+
     hour = () => {
         if (!this.ifHour(this.state.valueInput)) {
             this.setState({
-                valueInput: this.state.valueInput + "Ч",
-                timeFunc: true
+                valueInput: this.state.valueInput + "H",
+                timeFunc: true,
+                timeFuncClass: "time",
+                hourDisable: true
             });
         }
+    };
 
-    }
     minute = () => {
         if (!this.ifMinute(this.state.valueInput)) {
             this.setState({
-                valueInput: this.state.valueInput + "М",
-                timeFunc: true
+                valueInput: this.state.valueInput + "M",
+                timeFunc: true,
+                timeFuncClass: "time",
+                minuteDisable: true
             });
         }
+    };
 
-    }
+
     addClass = (e) => {
         e.target.classList.add('active');
         this.setState({
             targetClass: e.target
         });
-    }
+    };
     removeClass = (el) => {
-        el.classList.remove('active');
-    }
+        if (el) {
+            el.classList.remove('active');
+        }
+    };
     buttonClick = (e) => {
         this.addClass(e);
         setTimeout(() => {
             this.removeClass(this.state.targetClass);
             this.setState({targetClass: null});
         }, 100)
-    }
+    };
 
 
     render() {
         window.state = this.state;
         return (
-            <div className="App">
+            <div className={"App " + this.state.timeFuncClass}>
+                <span className="errorMessage">{this.state.error}</span>
                 <div className="input">{this.state.valueInput}</div>
                 <input ref={this.newRef} readOnly type="text" className="output" value={this.state.valueHistory}/>
                 <div className="section">
@@ -229,17 +284,17 @@ class App extends React.Component {
                     }}>
                         C
                     </div>
-                    <div className="button" onClick={(e) => {
+                    <div className={this.state.hourDisable ? "button disabled" : "button"} onClick={(e) => {
                         this.hour();
                         this.buttonClick(e)
-                    }}>Ч
+                    }}>H
                     </div>
-                    <div className="button" onClick={(e) => {
+                    <div className={this.state.minuteDisable ? "button disabled" : "button"} onClick={(e) => {
                         this.minute();
                         this.buttonClick(e)
-                    }}>М
+                    }}>M
                     </div>
-                    <div className="button" operator="/" onClick={e => {
+                    <div className="button ifTimeDisable" operator="/" onClick={e => {
                         this.mathOperator(e.target.getAttribute("operator"));
                         this.buttonClick(e)
                     }}>÷
@@ -262,7 +317,7 @@ class App extends React.Component {
                     }}>
                         9
                     </div>
-                    <div className="button" operator="*" onClick={e => {
+                    <div className="button ifTimeDisable" operator="*" onClick={e => {
                         this.mathOperator(e.target.getAttribute("operator"));
                         this.buttonClick(e)
                     }}>×
@@ -318,12 +373,12 @@ class App extends React.Component {
                         this.buttonClick(e)
                     }}>0
                     </div>
-                    <div className="button" onClick={(e) => {
+                    <div className="button ifTimeDisable" onClick={(e) => {
                         this.dot();
                         this.buttonClick(e)
                     }}>,
                     </div>
-                    <div className="button" onClick={(e) => {
+                    <div className={this.state.equalDisable ? "button disabled" : "button"} onClick={(e) => {
                         this.equal();
                         this.buttonClick(e)
                     }}>=
@@ -335,3 +390,5 @@ class App extends React.Component {
 }
 
 export default App;
+
+// TODO зафиксить залипание addclass
