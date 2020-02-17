@@ -386,9 +386,9 @@ class CalculatorOld extends React.Component {
         );
     }
 
-    // componentWillUnmount() {
-    //     this.clearValue();
-    // }
+    componentWillUnmount() {
+        this.clearValue();
+    }
 }
 
 export default CalculatorOld;

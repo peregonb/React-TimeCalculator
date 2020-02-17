@@ -6,8 +6,8 @@ import {Calculator} from "./components/Calculator/Calculator";
 
 const App = () => (
     <BrowserRouter>
-        <Route exact path={process.env.PUBLIC_URL + '/'} render={() => <CalculatorOld/>}/>
-        <Route exact path={process.env.PUBLIC_URL + '/calculator'} render={() => <Calculator/>}/>
+        {/*<Route exact path={process.env.PUBLIC_URL + '/calculator'} render={() => <CalculatorOld/>}/>*/}
+        <Route exact path={process.env.PUBLIC_URL + '/'} render={() => <Calculator/>}/>
     </BrowserRouter>
 );
 

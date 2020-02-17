@@ -7,7 +7,7 @@ export const Button = props => {
         classList.add("active");
         setTimeout(() => {
             classList.remove("active");
-        }, 100);
+        }, 70);
     };
 
     return (

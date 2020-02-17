@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import backspace from "../../assets/img/backspase.svg";
 import {Button} from "./Button";
 import * as math from 'mathjs';
@@ -6,10 +6,13 @@ import * as math from 'mathjs';
 export const Calculator = () => {
 
     let [inputValue, setInputValue] = useState("");
+    let [prevValue, setPrevValue] = useState("");
     let [outputValue, setOutputValue] = useState("");
     let [historyValue, setHistoryValue] = useState("");
     let [operator, setOperator] = useState("");
     let [error, setError] = useState("");
+    let [operatorDisabled, setOperatorDisabled] = useState("");
+    let [equalDisabled, setEqualDisabled] = useState("");
 
     const insert = (arr, index, newItem) => [
         ...arr.slice(0, index),
@@ -20,11 +23,11 @@ export const Calculator = () => {
     const numberClick = (num) => {
         if (!(inputValue === "000" && num === "0")) {
             setError("");
+            setOperatorDisabled("");
             let numbers;
             numbers = inputValue.match(/[:]/) ? (inputValue.split(/[:]/)[0].concat(inputValue.split(/[:]/)[1])) + num : inputValue + num;
             let transform = (num) => parseInt(num).toString(),
                 numbersTransformed = transform(numbers);
-
             if (numbersTransformed.length < 9) {
                 setInputValue(numbers);
                 let arrNumbers;
@@ -38,17 +41,24 @@ export const Calculator = () => {
                     }
                 };
                 let arr1 = Array.from(arrNumbers());
-                setOutputValue(insert(arr1, arr1.length - 2, ":").join(''));
+                let result = insert(arr1, arr1.length - 2, ":").join('');
+                setOutputValue(result);
             } else {
                 setError("Максимально 8 значений")
             }
         }
+
     };
 
     const clear = () => {
         setInputValue("");
         setOutputValue("");
+        setHistoryValue("");
         setError("");
+        setOperator("");
+        setPrevValue("");
+        setOperatorDisabled("");
+        setEqualDisabled("");
     };
 
     const backspaceClick = () => {
@@ -69,37 +79,59 @@ export const Calculator = () => {
         setInputValue(result);
     };
 
+    useEffect(() => {
+        setPrevValue(historyValue + " " + operator);
+    }, [historyValue, operator]);
+
+    useEffect(() => {
+        if (operator !== "") {
+            setOperatorDisabled(" pressed");
+        }
+    }, [outputValue]);
+
+
     const operatorClick = (op) => {
-        setOperator(op);
-        setHistoryValue(outputValue);
-        setInputValue("");
+            setInputValue("");
+            setOperator(op);
+            setHistoryValue(outputValue);
+            setEqualDisabled("");
     };
 
     const equalClick = () => {
-        if (operator !== "") {
-            let reserve = outputValue;
-            let convertToMinutes = (num) => {
-                    let hours = num.split(/[:]/)[0];
-                    let minutes = num.split(/[:]/)[1];
-                    return parseInt(math.evaluate((parseInt(hours) * 60) + parseInt(minutes)));
-                },
-                minutesResult = (num1, operator, num2) => {
-                    return math.evaluate(parseInt(num1) + operator + parseInt(num2));
-                },
-                convertToExpression = (num) => {
-                    let hours = Math.floor(num / 60);
-                    let minutes = num - hours * 60;
-                    return hours + ":" + minutes;
-                },
-                result = convertToExpression(minutesResult(convertToMinutes(historyValue), operator, convertToMinutes(outputValue)));
+        let convertToMinutes = (num) => {
+                let hours = num.split(/[:]/)[0];
+                let minutes = num.split(/[:]/)[1];
+                return parseInt(math.evaluate((parseInt(hours) * 60) + parseInt(minutes)));
+            },
+            minutesResult = (num1, operator, num2) => {
+                return math.evaluate(parseInt(num1) + operator + parseInt(num2));
+            },
+            convertToExpression = (num) => {
+                let hours = Math.floor(num / 60);
+                let minutes = num - hours * 60;
+                if (minutes.toString().length === 1) {
+                    minutes = '0' + minutes;
+                }
+                return hours + ":" + minutes;
+            };
+        if (operator !== "" && outputValue !== "") {
+            let result = convertToExpression(minutesResult(convertToMinutes(historyValue), operator, convertToMinutes(outputValue)));
+            if (result.match(/[-]/)) {
+                setError("Time couldn't be negative");
+            }
             setOutputValue(result);
-            console.log(outputValue, reserve)
+            setHistoryValue("");
+            setOperator("");
+            setEqualDisabled(" pressed");
+            setOperatorDisabled("");
         }
     };
+
 
     return (
         <div className="App">
             <span className="errorMessage">{error}</span>
+            <span className="prevValue">{prevValue}</span>
             <input readOnly={true} placeholder={"0:00"} className="input big" value={outputValue}/>
             <div className="section">
                 <Button value="7" onClick={() => {
@@ -123,7 +155,7 @@ export const Calculator = () => {
                 <Button value="6" onClick={() => {
                     numberClick("6")
                 }}/>
-                <Button value="-" onClick={() => {
+                <Button classList={operatorDisabled} value="-" onClick={() => {
                     operatorClick("-")
                 }}/>
                 <Button value="1" onClick={() => {
@@ -135,7 +167,7 @@ export const Calculator = () => {
                 <Button value="3" onClick={() => {
                     numberClick("3")
                 }}/>
-                <Button value="+" onClick={() => {
+                <Button classList={operatorDisabled} value="+" onClick={() => {
                     operatorClick("+")
                 }}/>
                 <Button value="0" classList="double" onClick={() => {
@@ -144,13 +176,10 @@ export const Calculator = () => {
                 <Button value="C" onClick={() => {
                     clear();
                 }}/>
-                <Button value="=" onClick={() => {
+                <Button classList={equalDisabled} value="=" onClick={() => {
                     equalClick();
                 }}/>
             </div>
         </div>
     )
 };
-
-// TODO BACKSPACE WHEN OPERATOR
-// TODO ADD ZEROS ON OPERATOR
