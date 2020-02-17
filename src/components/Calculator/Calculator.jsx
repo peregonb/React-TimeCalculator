@@ -44,7 +44,7 @@ export const Calculator = () => {
                 let result = insert(arr1, arr1.length - 2, ":").join('');
                 setOutputValue(result);
             } else {
-                setError("Максимально 8 значений")
+                setError("Maximum 8 digits accepted")
             }
         }
 
