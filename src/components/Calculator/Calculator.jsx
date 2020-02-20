@@ -14,6 +14,11 @@ export const Calculator = () => {
     let [operatorDisabled, setOperatorDisabled] = useState("");
     let [equalDisabled, setEqualDisabled] = useState("");
 
+
+    useEffect(() => {
+        console.table({inputValue, prevValue, outputValue, historyValue, operator, error, operatorDisabled, equalDisabled})
+    }, [inputValue, prevValue, outputValue, historyValue, operator, error, operatorDisabled, equalDisabled]);
+
     const insert = (arr, index, newItem) => [
         ...arr.slice(0, index),
         newItem,
@@ -91,10 +96,10 @@ export const Calculator = () => {
 
 
     const operatorClick = (op) => {
-            setInputValue("");
-            setOperator(op);
-            setHistoryValue(outputValue);
-            setEqualDisabled("");
+        setInputValue("");
+        setOperator(op);
+        setHistoryValue(outputValue);
+        setEqualDisabled("");
     };
 
     const equalClick = () => {
@@ -119,6 +124,7 @@ export const Calculator = () => {
             if (result.match(/[-]/)) {
                 setError("Time couldn't be negative");
             }
+            setInputValue(convertToMinutes(result).toString());
             setOutputValue(result);
             setHistoryValue("");
             setOperator("");
