@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/React-TimeCalculator/static/css/main.a6986a7c.chunk.css",
-    "main.js": "/React-TimeCalculator/static/js/main.29b04c9b.chunk.js",
-    "main.js.map": "/React-TimeCalculator/static/js/main.29b04c9b.chunk.js.map",
+    "main.js": "/React-TimeCalculator/static/js/main.cb60c7c4.chunk.js",
+    "main.js.map": "/React-TimeCalculator/static/js/main.cb60c7c4.chunk.js.map",
     "runtime-main.js": "/React-TimeCalculator/static/js/runtime-main.0a4966ff.js",
     "runtime-main.js.map": "/React-TimeCalculator/static/js/runtime-main.0a4966ff.js.map",
     "static/js/2.3009d79c.chunk.js": "/React-TimeCalculator/static/js/2.3009d79c.chunk.js",
     "static/js/2.3009d79c.chunk.js.map": "/React-TimeCalculator/static/js/2.3009d79c.chunk.js.map",
     "index.html": "/React-TimeCalculator/index.html",
-    "precache-manifest.034ebfd51d49fea58c0a7fc73db61d27.js": "/React-TimeCalculator/precache-manifest.034ebfd51d49fea58c0a7fc73db61d27.js",
+    "precache-manifest.9d8318a4117e3b94bf5fca7c3f4521d9.js": "/React-TimeCalculator/precache-manifest.9d8318a4117e3b94bf5fca7c3f4521d9.js",
     "service-worker.js": "/React-TimeCalculator/service-worker.js",
     "static/css/main.a6986a7c.chunk.css.map": "/React-TimeCalculator/static/css/main.a6986a7c.chunk.css.map",
     "static/js/2.3009d79c.chunk.js.LICENSE.txt": "/React-TimeCalculator/static/js/2.3009d79c.chunk.js.LICENSE.txt",
@@ -19,6 +19,6 @@
     "static/js/runtime-main.0a4966ff.js",
     "static/js/2.3009d79c.chunk.js",
     "static/css/main.a6986a7c.chunk.css",
-    "static/js/main.29b04c9b.chunk.js"
+    "static/js/main.cb60c7c4.chunk.js"
   ]
 }
