@@ -93,8 +93,7 @@ export const Calculator = () => {
             setEqualDisabled("");
 
             equalClick();
-        }
-        else{
+        } else {
             setOperator(op);
         }
     };
@@ -160,8 +159,7 @@ export const Calculator = () => {
                 <Button value="6" onClick={() => {
                     numberClick("6")
                 }}/>
-                <Button
-                    value="-" onClick={() => {
+                <Button value="-" onClick={() => {
                     operatorClick("-")
                 }}/>
                 <Button value="1" onClick={() => {
@@ -173,8 +171,7 @@ export const Calculator = () => {
                 <Button value="3" onClick={() => {
                     numberClick("3")
                 }}/>
-                <Button
-                    value="+" onClick={() => {
+                <Button value="+" onClick={() => {
                     operatorClick("+")
                 }}/>
                 <Button value="0" classList="double" onClick={() => {

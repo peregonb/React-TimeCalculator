@@ -1,23 +1,19 @@
-import React, {useRef} from "react";
+import React from "react";
 
-export const Button = props => {
-    const ref = useRef();
-    const buttonClick = () => {
-        let classList = ref.current.classList;
-        classList.add("active");
-        setTimeout(() => {
-            classList.remove("active");
-        }, 70);
-    };
+export const Button = ({classList, value, onClick}) => {
+    const buttonClick = e => {
+        e.persist();
+        e.target.classList.add('active');
+        setTimeout(() => e.target.classList.remove('active'), 70);
+    }
 
     return (
-        <div ref={ref}
-             className={`button${props.classList ? " " + props.classList : ""}`}
-             onClick={() => {
-                 buttonClick();
-                 props.onClick();
+        <div className={`button ${classList ? classList : ''}`.trim()}
+             onClick={e => {
+                 buttonClick(e);
+                 onClick();
              }}>
-            {props.value}
+            {value}
         </div>
     )
 };
