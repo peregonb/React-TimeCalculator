@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from "react";
 import backspace from "../../assets/img/backspase.svg";
+import settingsImg from "../../assets/img/settings.svg";
 import {Button} from "./Button";
 import * as math from 'mathjs';
+import Settings from "../Settings/Settings";
 
 export const Calculator = () => {
+    const pressedClassName = " pressed";
 
     let [inputValue, setInputValue] = useState("");
     let [prevValue, setPrevValue] = useState("");
@@ -11,11 +14,24 @@ export const Calculator = () => {
     let [historyValue, setHistoryValue] = useState("");
     let [operator, setOperator] = useState("");
     let [error, setError] = useState("");
+    let [openPopup, setOpenPopup] = useState(false);
     let [equalDisabled, setEqualDisabled] = useState("");
+    let [operatorDisabled, setOperatorDisabled] = useState(pressedClassName);
+    let [backspaceAndOperatorDisabled, setBackspaceAndOperatorDisabled] = useState("");
 
-    // useEffect(() => {
-    //     console.table({inputValue, prevValue, outputValue, historyValue, operator, error, equalDisabled})
-    // }, [inputValue, prevValue, outputValue, historyValue, operator, error, equalDisabled]);
+    useEffect(() => {
+        console.table({
+            inputValue,
+            prevValue,
+            outputValue,
+            historyValue,
+            operator,
+            error,
+            equalDisabled,
+            operatorDisabled,
+            backspaceAndOperatorDisabled
+        })
+    }, [inputValue, prevValue, outputValue, historyValue, operator, error, equalDisabled, operatorDisabled, backspaceAndOperatorDisabled]);
 
     const insert = (arr, index, newItem) => [
         ...arr.slice(0, index),
@@ -26,6 +42,8 @@ export const Calculator = () => {
     const numberClick = (num) => {
         if (!(inputValue === "000" && num === "0")) {
             setError("");
+            setBackspaceAndOperatorDisabled("");
+            setOperatorDisabled("");
             let numbers;
             numbers = inputValue.match(/[:]/) ? (inputValue.split(/[:]/)[0].concat(inputValue.split(/[:]/)[1])) + num : inputValue + num;
             let transform = (num) => parseInt(num).toString(),
@@ -60,6 +78,8 @@ export const Calculator = () => {
         setOperator("");
         setPrevValue("");
         setEqualDisabled("");
+        setOperatorDisabled(pressedClassName);
+        setBackspaceAndOperatorDisabled("");
     };
 
     const backspaceClick = () => {
@@ -122,68 +142,78 @@ export const Calculator = () => {
             let result = convertToExpression(minutesResult(convertToMinutes(historyValue), operator, convertToMinutes(outputValue)));
             if (result.match(/[-]/)) {
                 setError("Time couldn't be negative");
+                setOutputValue('NaN');
+                setBackspaceAndOperatorDisabled(pressedClassName);
+                setInputValue("");
+            } else {
+                setInputValue(convertToMinutes(result).toString());
+                setOutputValue(result);
             }
-            setInputValue(convertToMinutes(result).toString());
-            setOutputValue(result);
             setHistoryValue("");
             setOperator("");
-            setEqualDisabled(" pressed");
+            setEqualDisabled(pressedClassName);
         }
     };
 
 
     return (
-        <div className="App">
-            <span className="errorMessage">{error}</span>
-            <span className="prevValue">{prevValue}</span>
-            <input readOnly={true} placeholder={"0:00"} className="input big" value={outputValue}/>
-            <div className="section">
-                <Button value="7" onClick={() => {
-                    numberClick("7")
-                }}/>
-                <Button value="8" onClick={() => {
-                    numberClick("8")
-                }}/>
-                <Button value="9" onClick={() => {
-                    numberClick("9")
-                }}/>
-                <Button value={<img src={backspace} alt={"backspace"}/>} onClick={() => {
-                    backspaceClick();
-                }}/>
-                <Button value="4" onClick={() => {
-                    numberClick("4")
-                }}/>
-                <Button value="5" onClick={() => {
-                    numberClick("5")
-                }}/>
-                <Button value="6" onClick={() => {
-                    numberClick("6")
-                }}/>
-                <Button value="-" onClick={() => {
-                    operatorClick("-")
-                }}/>
-                <Button value="1" onClick={() => {
-                    numberClick("1")
-                }}/>
-                <Button value="2" onClick={() => {
-                    numberClick("2")
-                }}/>
-                <Button value="3" onClick={() => {
-                    numberClick("3")
-                }}/>
-                <Button value="+" onClick={() => {
-                    operatorClick("+")
-                }}/>
-                <Button value="0" classList="double" onClick={() => {
-                    numberClick("0")
-                }}/>
-                <Button value="C" onClick={() => {
-                    clear();
-                }}/>
-                <Button classList={equalDisabled} value="=" onClick={() => {
-                    equalClick();
-                }}/>
+        <>
+            <div className={`calculator${openPopup ? ' hidden': ''}`}>
+                <img className="settings" src={settingsImg} alt="settings" onClick={() => {setOpenPopup(!openPopup)}}/>
+                <span className="errorMessage">{error}</span>
+                <span className="prevValue">{prevValue}</span>
+                <input readOnly={true} placeholder={"0:00"} className="input big" value={outputValue}/>
+                <div className="section">
+                    <Button value="7" onClick={() => {
+                        numberClick("7")
+                    }}/>
+                    <Button value="8" onClick={() => {
+                        numberClick("8")
+                    }}/>
+                    <Button value="9" onClick={() => {
+                        numberClick("9")
+                    }}/>
+                    <Button classList={backspaceAndOperatorDisabled} value={<img src={backspace} alt={"backspace"}/>}
+                            onClick={() => {
+                                backspaceClick();
+                            }}/>
+                    <Button value="4" onClick={() => {
+                        numberClick("4")
+                    }}/>
+                    <Button value="5" onClick={() => {
+                        numberClick("5")
+                    }}/>
+                    <Button value="6" onClick={() => {
+                        numberClick("6")
+                    }}/>
+                    <Button classList={operatorDisabled + backspaceAndOperatorDisabled} value="-" onClick={() => {
+                        operatorClick("-")
+                    }}/>
+                    <Button value="1" onClick={() => {
+                        numberClick("1")
+                    }}/>
+                    <Button value="2" onClick={() => {
+                        numberClick("2")
+                    }}/>
+                    <Button value="3" onClick={() => {
+                        numberClick("3")
+                    }}/>
+                    <Button classList={operatorDisabled + backspaceAndOperatorDisabled} value="+" onClick={() => {
+                        operatorClick("+")
+                    }}/>
+                    <Button value="0" classList="double" onClick={() => {
+                        numberClick("0")
+                    }}/>
+                    <Button value="C" onClick={() => {
+                        clear();
+                    }}/>
+                    <Button classList={equalDisabled} value="=" onClick={() => {
+                        equalClick();
+                    }}/>
+                </div>
             </div>
-        </div>
+
+            <Settings openPopup={openPopup}/>
+        </>
     )
 };
