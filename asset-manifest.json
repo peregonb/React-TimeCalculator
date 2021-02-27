@@ -1,24 +1,25 @@
 {
   "files": {
-    "main.css": "/React-TimeCalculator/static/css/main.a6986a7c.chunk.css",
-    "main.js": "/React-TimeCalculator/static/js/main.cb60c7c4.chunk.js",
-    "main.js.map": "/React-TimeCalculator/static/js/main.cb60c7c4.chunk.js.map",
-    "runtime-main.js": "/React-TimeCalculator/static/js/runtime-main.0a4966ff.js",
-    "runtime-main.js.map": "/React-TimeCalculator/static/js/runtime-main.0a4966ff.js.map",
-    "static/js/2.3009d79c.chunk.js": "/React-TimeCalculator/static/js/2.3009d79c.chunk.js",
-    "static/js/2.3009d79c.chunk.js.map": "/React-TimeCalculator/static/js/2.3009d79c.chunk.js.map",
+    "main.css": "/React-TimeCalculator/static/css/main.196b1300.chunk.css",
+    "main.js": "/React-TimeCalculator/static/js/main.4d74e1f3.chunk.js",
+    "main.js.map": "/React-TimeCalculator/static/js/main.4d74e1f3.chunk.js.map",
+    "runtime-main.js": "/React-TimeCalculator/static/js/runtime-main.520ab6c7.js",
+    "runtime-main.js.map": "/React-TimeCalculator/static/js/runtime-main.520ab6c7.js.map",
+    "static/js/2.9377bbbe.chunk.js": "/React-TimeCalculator/static/js/2.9377bbbe.chunk.js",
+    "static/js/2.9377bbbe.chunk.js.map": "/React-TimeCalculator/static/js/2.9377bbbe.chunk.js.map",
     "index.html": "/React-TimeCalculator/index.html",
-    "precache-manifest.9d8318a4117e3b94bf5fca7c3f4521d9.js": "/React-TimeCalculator/precache-manifest.9d8318a4117e3b94bf5fca7c3f4521d9.js",
+    "precache-manifest.2f780e7fdfe58215ca00097f6128868c.js": "/React-TimeCalculator/precache-manifest.2f780e7fdfe58215ca00097f6128868c.js",
     "service-worker.js": "/React-TimeCalculator/service-worker.js",
-    "static/css/main.a6986a7c.chunk.css.map": "/React-TimeCalculator/static/css/main.a6986a7c.chunk.css.map",
-    "static/js/2.3009d79c.chunk.js.LICENSE.txt": "/React-TimeCalculator/static/js/2.3009d79c.chunk.js.LICENSE.txt",
+    "static/css/main.196b1300.chunk.css.map": "/React-TimeCalculator/static/css/main.196b1300.chunk.css.map",
+    "static/js/2.9377bbbe.chunk.js.LICENSE.txt": "/React-TimeCalculator/static/js/2.9377bbbe.chunk.js.LICENSE.txt",
     "static/media/App.scss": "/React-TimeCalculator/static/media/Montserrat-Thin.d298af21.eot",
-    "static/media/backspase.svg": "/React-TimeCalculator/static/media/backspase.17f8a12e.svg"
+    "static/media/backspase.svg": "/React-TimeCalculator/static/media/backspase.b9248099.svg",
+    "static/media/settings.svg": "/React-TimeCalculator/static/media/settings.e9ef167f.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.0a4966ff.js",
-    "static/js/2.3009d79c.chunk.js",
-    "static/css/main.a6986a7c.chunk.css",
-    "static/js/main.cb60c7c4.chunk.js"
+    "static/js/runtime-main.520ab6c7.js",
+    "static/js/2.9377bbbe.chunk.js",
+    "static/css/main.196b1300.chunk.css",
+    "static/js/main.4d74e1f3.chunk.js"
   ]
 }

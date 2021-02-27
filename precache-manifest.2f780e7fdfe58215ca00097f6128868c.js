@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "cbfadefbee615e7deac6d4e4d603e131",
+    "revision": "b6a00d97f64e091036138a5abde73699",
     "url": "/React-TimeCalculator/index.html"
   },
   {
-    "revision": "8e77083b59a555bfcbea",
-    "url": "/React-TimeCalculator/static/css/main.a6986a7c.chunk.css"
+    "revision": "ea1bba8807b54a2df07a",
+    "url": "/React-TimeCalculator/static/css/main.196b1300.chunk.css"
   },
   {
-    "revision": "94e5d817876903639f16",
-    "url": "/React-TimeCalculator/static/js/2.3009d79c.chunk.js"
+    "revision": "665d0cab1fa154176eca",
+    "url": "/React-TimeCalculator/static/js/2.9377bbbe.chunk.js"
   },
   {
-    "revision": "fab1da7d8a32be3fe90e332131eacf28",
-    "url": "/React-TimeCalculator/static/js/2.3009d79c.chunk.js.LICENSE.txt"
+    "revision": "4e3468a2d0bf5092a5098c0446a06990",
+    "url": "/React-TimeCalculator/static/js/2.9377bbbe.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "8e77083b59a555bfcbea",
-    "url": "/React-TimeCalculator/static/js/main.cb60c7c4.chunk.js"
+    "revision": "ea1bba8807b54a2df07a",
+    "url": "/React-TimeCalculator/static/js/main.4d74e1f3.chunk.js"
   },
   {
-    "revision": "cf09f96ce065d574f74b",
-    "url": "/React-TimeCalculator/static/js/runtime-main.0a4966ff.js"
+    "revision": "8420e5fdcf54b9559217",
+    "url": "/React-TimeCalculator/static/js/runtime-main.520ab6c7.js"
   },
   {
     "revision": "8249902c73b4219f19776974aa11706e",
@@ -168,7 +168,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/React-TimeCalculator/static/media/Montserrat-Thin.d298af21.eot"
   },
   {
-    "revision": "17f8a12e6482843685f0dfe74c237bbb",
-    "url": "/React-TimeCalculator/static/media/backspase.17f8a12e.svg"
+    "revision": "b9248099dfee55a42deca63cc2837b04",
+    "url": "/React-TimeCalculator/static/media/backspase.b9248099.svg"
+  },
+  {
+    "revision": "e9ef167fd1e6f4a990ca3d1970083645",
+    "url": "/React-TimeCalculator/static/media/settings.e9ef167f.svg"
   }
 ]);
