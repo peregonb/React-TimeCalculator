@@ -159,7 +159,7 @@ export const Calculator = () => {
     return (
         <>
             <div className={`calculator${openPopup ? ' hidden': ''}`}>
-                <img className="settings" src={settingsImg} alt="settings" onClick={() => {setOpenPopup(!openPopup)}}/>
+                {/*<img className="settings" src={settingsImg} alt="settings" onClick={() => {setOpenPopup(!openPopup)}}/>*/}
                 <span className="errorMessage">{error}</span>
                 <span className="prevValue">{prevValue}</span>
                 <input readOnly={true} placeholder={"0:00"} className="input big" value={outputValue}/>

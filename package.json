@@ -1,6 +1,8 @@
 {
   "name": "react-time-calculator",
-  "homepage": "https://peregonb.github.io/React-TimeCalculator",
+  "homepageExternal": "https://peregonb.github.io/React-TimeCalculator",
+  "homepageLocal": "./",
+  "homepage": "./",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -14,6 +16,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build-android-bundle": "yarn run build && rm android/app/src/main/assets/*/** -rf && mv build/** android/app/src/main/assets && rm android/app/src/main/assets/build -rf",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
